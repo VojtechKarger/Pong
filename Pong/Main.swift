@@ -12,7 +12,7 @@ final class Main {
     
     private var scene: SceneView
     
-    public init(scene: SceneView, gameType: Oponent) {
+    public init(scene: SceneView, gameType: GameType) {
         self.scene = scene
         
         let height = 100.0
@@ -69,7 +69,7 @@ final class Main {
     public var player1: Player
     public var player2: Player
     
-    private var gameType: Oponent
+    private var gameType: GameType
     
     private var gameover = false
     

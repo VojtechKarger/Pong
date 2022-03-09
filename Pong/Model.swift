@@ -30,6 +30,6 @@ enum Start {
     case player1, player2
 }
 
-enum Oponent {
+enum GameType {
     case playerVSbot, playerVSplayer
 }
