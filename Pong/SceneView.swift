@@ -13,7 +13,7 @@ class SceneView: NSView {
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        main = Main(scene: self)
+        main = Main(scene: self, gameType: .playerVSbot)
     }
     
     let color: NSColor = .green
@@ -33,8 +33,10 @@ class SceneView: NSView {
         context?.fill(bounds)
         
         context?.setFillColor(color.cgColor)
-        context?.fill(CGRect(x: main.puck.x, y: main.puck.y, width: main.puck.radius, height: main.puck.radius))
-
+        
+        //context?.fill(CGRect(x: main.puck.x, y: main.puck.y, width: main.puck.radius, height: main.puck.radius))
+        context?.fillEllipse(in: CGRect(x: main.puck.x, y: main.puck.y, width: main.puck.radius, height: main.puck.radius))
+        
         context?.fill(CGRect(x: main.player1.x, y: main.player1.y, width: main.player1.width, height: main.player1.height))
                 
         context?.fill(CGRect(x: main.player2.x, y: main.player2.y, width: main.player2.width, height: main.player2.height))

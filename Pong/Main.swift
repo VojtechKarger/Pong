@@ -12,14 +12,16 @@ final class Main {
     
     private var scene: SceneView
     
-    public init(scene: SceneView) {
+    public init(scene: SceneView, gameType: Oponent) {
         self.scene = scene
         
         let height = 100.0
         let width = 25.0
-                
+        
         player1 = Player(x: 50, y: (scene.bounds.height - height) / 2 , height: height, width: width)
         player2 = Player(x: 50, y: (scene.bounds.height - height) / 2 , height: height, width: width)
+        
+        self.gameType = gameType
         
         dx = speed
         dy = speed
@@ -29,10 +31,10 @@ final class Main {
             guard let object = notification.object as? UInt16 else { return }
             let speed = self.speed
             switch object {
-            case 126: self.player2.dy = speed
-            case 125: self.player2.dy = -speed
-            case 13: self.player1.dy = speed
-            case 1: self.player1.dy = -speed
+            case 126:  self.player2.dy = speed
+            case 125:  self.player2.dy = -speed
+            case 13: if gameType == .playerVSplayer { self.player1.dy = speed }
+            case 1: if gameType == .playerVSplayer { self.player1.dy = -speed }
             case 49: if self.gameover { self.resetPositions() }
             default: break
             }
@@ -42,10 +44,10 @@ final class Main {
             guard let self = self else { return }
             guard let object = notification.object as? UInt16 else { return }
             switch object {
-            case 126: self.player2.dy = 0
-            case 125: self.player2.dy = 0
-            case 13: self.player1.dy = 0
-            case 1: self.player1.dy = 0
+            case 126:  self.player2.dy = 0
+            case 125:  self.player2.dy = 0
+            case 13: if gameType == .playerVSplayer { self.player1.dy = 0 }
+            case 1: if gameType == .playerVSplayer { self.player1.dy = 0 }
             default: break
             }
         }
@@ -66,6 +68,8 @@ final class Main {
     
     public var player1: Player
     public var player2: Player
+    
+    private var gameType: Oponent
     
     private var gameover = false
     
@@ -94,7 +98,7 @@ final class Main {
         main()
     }
     
-    private let speed = 3.0
+    private var speed = 3.0
     
     private var multiplier = 1.0
     
@@ -118,6 +122,14 @@ final class Main {
             self.main()
         }
         
+        
+        if gameType == .playerVSbot {
+            if puck.y > player1.y {
+                player1.dy = speed
+            }else if puck.y < player1.y {
+                player1.dy = -speed
+            }
+        }
         
         let range1 = (50)...(50 + player1.width)
         let range2 = (scene.bounds.maxX - puck.radius - (50 + player2.width))...(scene.bounds.maxX - puck.radius - 50)
@@ -162,4 +174,5 @@ final class Main {
         
         return (playerCenter - puckCenter) / 40
     }
+    
 }
